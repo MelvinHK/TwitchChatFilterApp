@@ -1,38 +1,105 @@
-.App {
-  text-align: center;
+html * {
+    font-family: Arial, Helvetica, sans-serif !important;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body {
+    padding: 50px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+h3 {
+    margin-top: 0;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+input,
+li {
+    font-size: 14px;
 }
 
-.App-link {
-  color: #61dafb;
+li {
+    margin-top: 10px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.util-column {
+    width: 350px;
+    padding: 20px;
+    padding-top: 0;
+}
+
+.chatbox {
+    display: flex;
+    flex-direction: column-reverse;
+    list-style: none;
+    border: solid 1px lightgray;
+    overflow: auto;
+    scroll-behavior: smooth;
+    border-radius: 5px;
+    width: 500px;
+    height: 500px;
+    padding: 20px;
+    padding-top: 5px;
+    margin: 0;
+    word-break: break-word;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: none;
+}
+
+::-webkit-scrollbar-thumb {
+    min-height: 40px;
+    background: rgb(211, 211, 211);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgb(186, 186, 186);
+}
+
+.channel-search,
+.btn,
+.submit-btn {
+    padding: 10px;
+    border: solid 1px lightgrey;
+}
+
+.channel-search {
+    border-radius: 5px 0 0 5px;
+    width: auto;
+    flex-grow: 1;
+}
+
+.submit-btn {
+    border-color: rgb(125, 50, 235);
+    border-radius: 0 5px 5px 0;
+    background-color: rgb(145, 70, 255);
+    color: rgb(240, 240, 255);
+}
+
+.btn {
+    border-radius: 5px;
+}
+
+.btn,
+.submit-btn {
+    cursor: pointer;
+    transition-duration: 0.2s;
+}
+
+.btn:hover,
+.submit-btn:hover {
+    filter: brightness(1.1)
+}
+
+.btn:active,
+.submit-btn:active {
+    filter: brightness(0.9);
+}
+
+.flex-container {
+    display: flex;
+    justify-content: center;
 }
