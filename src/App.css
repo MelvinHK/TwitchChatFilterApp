@@ -11,8 +11,13 @@ h3 {
 }
 
 input,
-li {
+li,
+p {
     font-size: 14px;
+}
+
+p {
+    color: gray;
 }
 
 li {
@@ -38,9 +43,10 @@ li {
     width: 500px;
     height: 500px;
     padding: 20px;
-    padding-top: 5px;
+    padding-top: 9.5px;
     margin: 0;
     word-break: break-word;
+    scrollbar-gutter: stable;
 }
 
 .chatbox-div {
@@ -107,4 +113,10 @@ li {
 
 .d-none {
     display: none;
+}
+
+.connect-msg {
+    position: absolute;
+    margin-left: 20px;
+    margin-top: 20px;
 }

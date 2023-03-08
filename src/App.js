@@ -6,7 +6,9 @@ function App() {
   const chatbox = useRef(null);
   const [name, setName] = useState('');
   const [client, setClient] = useState();
-  const [scrolledBottom, setScrolledBottom] = useState(true)
+  const [loading, setLoading] = useState();
+  const [scrolledBottom, setScrolledBottom] = useState(true);
+  const [mousedOverChat, setMousedOverChat] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,7 +22,13 @@ function App() {
     if (!client)
       return;
 
-    client.connect();
+    const connectToChannel = async () => {
+      setLoading(true);
+      await client.connect();
+      setLoading(false);
+    }
+
+    connectToChannel();
 
     return () => {
       client.disconnect();
@@ -71,7 +79,13 @@ function App() {
         </form>
       </div>
       <div className='chatbox-div'>
-        <ul ref={chatbox} className='chatbox' onScroll={(e) => { handleScroll(e.target) }} />
+        <p className={`connect-msg ${loading ? '' : 'd-none'}`}>Connecting...</p>
+        <ul
+          ref={chatbox} className='chatbox' style={{ overflow: mousedOverChat ? 'auto' : 'hidden' }}
+          onScroll={(e) => { handleScroll(e.target) }}
+          onMouseEnter={() => setMousedOverChat(true)}
+          onMouseLeave={() => setMousedOverChat(false)}
+        />
         <button
           className={`btn scroll-bottom-btn ${scrolledBottom ? 'd-none' : ''}`}
           onClick={() => scrollToBottom()}
