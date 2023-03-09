@@ -74,21 +74,21 @@ li {
     scrollbar-gutter: stable;
 }
 
-::-webkit-scrollbar {
+.chatbox::-webkit-scrollbar {
     width: 10px;
 }
 
-::-webkit-scrollbar-track {
+.chatbox::-webkit-scrollbar-track {
     background: none;
 }
 
-::-webkit-scrollbar-thumb {
+.chatbox::-webkit-scrollbar-thumb {
     min-height: 40px;
     background: rgb(211, 211, 211);
     border-radius: 5px;
 }
 
-::-webkit-scrollbar-thumb:hover {
+.chatbox::-webkit-scrollbar-thumb:hover {
     background: rgb(186, 186, 186);
 }
 
