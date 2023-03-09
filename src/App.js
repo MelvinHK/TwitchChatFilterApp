@@ -93,9 +93,11 @@ function App() {
   return (
     <div className='flex-row'>
 
+      {/* Utility column */}
       <div className='util-column flex-column'>
+        <h3>Twitch Chat Relay</h3>
+        {/* Channel search */}
         <form onSubmit={handleSubmit}>
-          <h3>Twitch Chat Relay</h3>
           <div className='flex-row'>
             <input type='text' value={name} onChange={(e) => setName(e.target.value)}
               placeholder='Channel Name' className='flex-grow right-flat' />
@@ -103,6 +105,7 @@ function App() {
           </div>
         </form>
         <h4>Filters</h4>
+        {/* Includes/Excludes */}
         <div className='flex-row'>
           <input type='text' value={includes} onChange={(e) => { setIncludes(e.target.value) }}
             placeholder='Includes' className='w-50 right-flat' />
@@ -113,6 +116,7 @@ function App() {
           className='btn align-center' onClick={() => clearChat()}>Clear Chat</button>
       </div>
 
+      {/* Chatbox */}
       <div className='flex-column'>
         <p className={`connect-msg ${loading ? '' : 'd-none'}`}>Connecting...</p>
         <ul
