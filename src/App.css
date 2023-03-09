@@ -10,6 +10,10 @@ h3 {
     margin-top: 0;
 }
 
+h4 {
+    margin: 0 0 10px 0;
+}
+
 input,
 li,
 p {
@@ -24,14 +28,35 @@ li {
     margin-top: 10px;
 }
 
-.flex-container {
+.flex-row {
     display: flex;
     justify-content: center;
 }
 
+.flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.flex-grow {
+    flex-grow: 1;
+}
+
+.align-center {
+    align-self: center;
+}
+
+.w-50 {
+    width: 50%;
+}
+
+.w-100 {
+    width: 100%;
+}
+
 .util-column {
     width: 350px;
-    padding: 20px;
+    margin: 0 20px 0 0;
     padding-top: 0;
 }
 
@@ -44,14 +69,9 @@ li {
     height: 500px;
     padding: 20px;
     padding-top: 9.5px;
-    margin: 0;
+    margin: 0 0 20px 0;
     word-break: break-word;
     scrollbar-gutter: stable;
-}
-
-.chatbox-div {
-    display: flex;
-    flex-direction: column;
 }
 
 ::-webkit-scrollbar {
@@ -73,34 +93,47 @@ li {
 }
 
 .channel-search,
+input,
 .btn {
     padding: 10px;
     border: solid 1px lightgrey;
 }
 
-.channel-search {
-    border-radius: 5px 0 0 5px;
-    width: auto;
-    flex-grow: 1;
+.btn,
+input {
+    border-radius: 5px;
+    margin-bottom: 20px;
+    transition-duration: 0.2s;
+    box-sizing: border-box;
+}
+
+input:focus {
+    outline: none !important;
+    box-shadow: 0 0 5px #c1c1c1;
+}
+
+.right-flat {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.left-flat {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.center {
+    text-align: center;
 }
 
 .btn {
-    border-radius: 5px;
     cursor: pointer;
-    transition-duration: 0.2s;
 }
 
 .submit-btn {
     border-color: rgb(125, 50, 235);
-    border-radius: 0 5px 5px 0;
     background-color: rgb(145, 70, 255);
     color: rgb(240, 240, 255);
-}
-
-.scroll-bottom-btn {
-    margin-top: 20px;
-    width: 200px;
-    align-self: center;
 }
 
 .btn:hover {
