@@ -16,7 +16,8 @@ h4 {
 
 input,
 li,
-p {
+p,
+label {
     font-size: 14px;
 }
 
@@ -30,7 +31,6 @@ li {
 
 .flex-row {
     display: flex;
-    justify-content: center;
 }
 
 .flex-column {
@@ -38,12 +38,12 @@ li {
     flex-direction: column;
 }
 
-.flex-grow {
-    flex-grow: 1;
+.align-self-center {
+    align-self: center;
 }
 
-.align-center {
-    align-self: center;
+.align-content-center {
+    justify-content: center;
 }
 
 .w-50 {
@@ -58,6 +58,18 @@ li {
     width: 350px;
     margin: 0 20px 0 0;
     padding-top: 0;
+}
+
+.margin-bottom {
+    margin-bottom: 20px;
+}
+
+.magnet-bottom {
+    margin-bottom: -1px;
+}
+
+.margin-right {
+    margin-right: 20px;
 }
 
 .chatbox {
@@ -97,6 +109,7 @@ input,
 .btn {
     padding: 10px;
     border: solid 1px lightgrey;
+    box-sizing: border-box;
 }
 
 .btn,
@@ -104,12 +117,16 @@ input {
     border-radius: 5px;
     margin-bottom: 20px;
     transition-duration: 0.2s;
-    box-sizing: border-box;
 }
 
-input:focus {
+input[type='checkbox'] {
+    margin: 0 5px 0 0;
+}
+
+input[type='text']:focus {
     outline: none !important;
-    box-shadow: 0 0 5px #c1c1c1;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    position: relative;
 }
 
 .right-flat {
@@ -122,12 +139,22 @@ input:focus {
     border-bottom-left-radius: 0;
 }
 
-.center {
-    text-align: center;
+.bottom-flat {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.top-flat {
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
 }
 
 .btn {
     cursor: pointer;
+}
+
+.width {
+    width: 55px;
 }
 
 .submit-btn {

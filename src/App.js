@@ -14,9 +14,12 @@ function App() {
   const [excludes, setExcludes] = useState('');
   const [excludesArray, setExcludesArray] = useState([]);
 
+  const [subOnly, setSubOnly] = useState(false);
+
   const [scrolledBottom, setScrolledBottom] = useState(true);
   const [mousedOverChat, setMousedOverChat] = useState(false);
 
+  // Initialise client
   const handleSubmit = async (e) => {
     e.preventDefault();
     clearChat();
@@ -25,6 +28,7 @@ function App() {
     }));
   }
 
+  // Connect to channel
   useEffect(() => {
     if (!client)
       return;
@@ -42,13 +46,19 @@ function App() {
     }
   }, [client]);
 
+  // Get chat messages
   useEffect(() => {
     if (!client)
       return;
 
     const handleNewMessage = (channel, tags, message, self) => {
-      if ((includesArray.length > 0 && !includesArray.some(word => message.includes(word))) || excludesArray.some(word => message.includes(word)))
-        return //console.log(message)
+      console.log(includesArray, excludesArray)
+      if (
+        (subOnly && !tags.subscriber) ||
+        (includesArray.length > 0 && !includesArray.some(word => message.includes(word))) ||
+        excludesArray.some(word => message.includes(word))
+      )
+        return console.log(message)
       const newMessage = document.createElement('li');
       newMessage.setAttribute('id', tags.id);
       newMessage.innerHTML = `<span style='color:${tags.color};'>${tags['display-name']}</span>: ${message}`;
@@ -62,21 +72,20 @@ function App() {
     return () => {
       client.off('message', handleNewMessage);
     }
-  }, [client, scrolledBottom, includesArray, excludesArray]);
+  }, [client, scrolledBottom, includesArray, excludesArray, subOnly]);
 
-  useEffect(() => {
-    if (includes !== '')
-      setIncludesArray(includes.replace(/\s/g, '').split(','));
+  // Includes/Excludes filter
+  const applyCludes = () => {
+    if (includes === '' || !includes.replace(/\s/g, '').length)
+      setIncludesArray([]);
     else
-      setIncludesArray([])
-  }, [includes]);
+      setIncludesArray(includes.replace(/\s*,\s*/g, ',').split(','));
 
-  useEffect(() => {
-    if (excludes !== '')
-      setExcludesArray(excludes.replace(/\s/g, '').split(','));
+    if (excludes === '' || !excludes.replace(/\s/g, '').length)
+      setExcludesArray([]);
     else
-      setExcludesArray([])
-  }, [excludes]);
+      setExcludesArray(excludes.replace(/\s*,\s*/g, ',').split(','));
+  }
 
   const clearChat = () => {
     chatbox.current.replaceChildren();
@@ -90,30 +99,58 @@ function App() {
     chatbox.current.scrollTop = chatbox.current.scrollHeight;
   }
 
+  const findRandomMessage = () => {
+    const messages = chatbox.current.childNodes;
+    if (messages.length > 0) {
+      const message = messages[Math.floor(Math.random() * messages.length)];
+      message.scrollIntoView();
+    }
+  }
+
+
   return (
-    <div className='flex-row'>
+    <div className='flex-row align-content-center'>
 
       {/* Utility column */}
       <div className='util-column flex-column'>
         <h3>Twitch Chat Relay</h3>
+
         {/* Channel search */}
         <form onSubmit={handleSubmit}>
           <div className='flex-row'>
             <input type='text' value={name} onChange={(e) => setName(e.target.value)}
-              placeholder='Channel Name' className='flex-grow right-flat' />
-            <input type='submit' className='btn submit-btn left-flat' />
+              placeholder='Channel Name' className='w-100 right-flat' />
+            <input type='submit' value='Relay' className='btn submit-btn left-flat width' />
           </div>
         </form>
+
         <h4>Filters</h4>
+
         {/* Includes/Excludes */}
         <div className='flex-row'>
-          <input type='text' value={includes} onChange={(e) => { setIncludes(e.target.value) }}
-            placeholder='Includes' className='w-50 right-flat' />
-          <input type='text' value={excludes} onChange={(e) => setExcludes(e.target.value)}
-            placeholder='Excludes' className='w-50 left-flat' />
+          <div>
+            <input type='text' value={includes} onChange={(e) => { setIncludes(e.target.value) }}
+              placeholder='Includes' className='w-100 bottom-flat right-flat magnet-bottom' />
+            <input type='text' value={excludes} onChange={(e) => setExcludes(e.target.value)}
+              placeholder='Excludes' className='w-100 right-flat top-flat' />
+          </div>
+          <button type='button'
+            className='btn left-flat width' onClick={() => applyCludes()}>Apply</button>
         </div>
-        <button type="button"
-          className='btn align-center' onClick={() => clearChat()}>Clear Chat</button>
+
+        {/* Subscriber only */}
+        <div className='margin-bottom'>
+          <input type='checkbox' value={subOnly} onChange={() => setSubOnly(!subOnly)} />
+          <label>Subscriber Only</label>
+        </div>
+
+        {/* Random / Clear */}
+        <div className='flex-row align-content-center'>
+          <button type='button'
+            className='btn margin-right' onClick={() => findRandomMessage()}>Find Random</button>
+          <button type='button'
+            className='btn align-self-center' onClick={() => clearChat()}>Clear Chat</button>
+        </div>
       </div>
 
       {/* Chatbox */}
@@ -126,7 +163,7 @@ function App() {
           onMouseLeave={() => setMousedOverChat(false)}
         />
         <button type="button"
-          className={`btn scroll-bottom-btn align-center ${scrolledBottom ? 'd-none' : ''}`}
+          className={`btn scroll-bottom-btn align-self-center ${scrolledBottom ? 'd-none' : ''}`}
           onClick={() => scrollToBottom()}
         >
           {'\u{1F847}'} Scroll to Bottom
