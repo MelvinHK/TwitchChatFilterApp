@@ -52,7 +52,6 @@ function App() {
       return;
 
     const handleNewMessage = (channel, tags, message, self) => {
-      console.log(includesArray, excludesArray)
       if (
         (subOnly && !tags.subscriber) ||
         (includesArray.length > 0 && !includesArray.some(word => message.includes(word))) ||
@@ -61,7 +60,7 @@ function App() {
         return console.log(message)
       const newMessage = document.createElement('li');
       newMessage.setAttribute('id', tags.id);
-      newMessage.innerHTML = `<span style='color:${tags.color};'>${tags['display-name']}</span>: ${message}`;
+      newMessage.innerHTML = `<span style='color:${tags.color};'>${tags['display-name']}</span>: <span>${message}</span>`;
       chatbox.current.appendChild(newMessage);
       if (scrolledBottom)
         chatbox.current.scrollTop = chatbox.current.scrollHeight;
@@ -103,6 +102,7 @@ function App() {
     const messages = chatbox.current.childNodes;
     if (messages.length > 0) {
       const message = messages[Math.floor(Math.random() * messages.length)];
+      message.lastElementChild.classList.add('highlight')
       message.scrollIntoView();
     }
   }
