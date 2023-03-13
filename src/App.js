@@ -193,7 +193,7 @@ function App() {
           <button type='button'
             className='btn align-self-center mb-0' onClick={() => clearChat()}>Clear Chat</button>
         </div>
-        
+
         <p className='align-self-center mb-0 margin-top'>{messageRate} messages/sec</p>
       </div>
 
