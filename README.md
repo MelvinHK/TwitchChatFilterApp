@@ -10,4 +10,3 @@ Features:
 
 Planned Features:
 - Display Twitch/BTTV/7TV emotes
-- Make all options collapsable
