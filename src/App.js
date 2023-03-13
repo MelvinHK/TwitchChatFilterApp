@@ -24,6 +24,10 @@ function App() {
   const [scrolledBottom, setScrolledBottom] = useState(true);
   const [mousedOverChat, setMousedOverChat] = useState(false);
 
+  const [startTime, setStartTime] = useState();
+  const [messageCount, setMessageCount] = useState(0);
+  const [messageRate, setMessageRate] = useState('0.00');
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     clearChat();
@@ -67,10 +71,14 @@ function App() {
       )
         return console.log(`${tags.username}: ${message}`);
 
+      setMessageCount(messageCount + 1);
+      const elapsedTime = Date.now() - startTime;
+      setMessageRate((messageCount / (elapsedTime / 1000)).toFixed(2));
+
       const newMessage = document.createElement('li');
       newMessage.setAttribute('id', tags.id);
       newMessage.innerHTML = `<span style='color:${tags.color};'>${tags['display-name']}</span>: <span>${message}</span>`;
-      
+
       chatbox.current.appendChild(newMessage);
       if (scrolledBottom)
         chatbox.current.scrollTop = chatbox.current.scrollHeight;
@@ -81,7 +89,7 @@ function App() {
     return () => {
       client.off('message', handleNewMessage);
     }
-  }, [client, scrolledBottom, includesArray, excludesArray, whitelistArray, blacklistArray, subOnly]);
+  }, [client, scrolledBottom, includesArray, excludesArray, whitelistArray, blacklistArray, subOnly, startTime, messageCount]);
 
   const applyFilter = (state, stateFunction) => {
     if (state === '' || !state.replace(/\s/g, '').length)
@@ -107,6 +115,9 @@ function App() {
   const clearChat = () => {
     chatbox.current.replaceChildren();
     setScrolledBottom(true);
+    setStartTime(Date.now());
+    setMessageCount(0);
+    setMessageRate('0.00')
   }
 
   const handleScroll = (e) => {
@@ -176,12 +187,14 @@ function App() {
         </div>
 
         {/* Random / Clear */}
-        <div className='flex-row align-content-center'>
+        <div className='flex-row align-content-center column-end'>
           <button type='button'
-            className='btn margin-right' onClick={() => findRandomMessage()}>Find Random</button>
+            className='btn margin-right mb-0' onClick={() => findRandomMessage()}>Find Random</button>
           <button type='button'
-            className='btn align-self-center' onClick={() => clearChat()}>Clear Chat</button>
+            className='btn align-self-center mb-0' onClick={() => clearChat()}>Clear Chat</button>
         </div>
+        
+        <p className='align-self-center mb-0 margin-top'>{messageRate} messages/sec</p>
       </div>
 
       {/* Chatbox */}
@@ -194,7 +207,7 @@ function App() {
           onMouseLeave={() => setMousedOverChat(false)}
         />
         <button type="button"
-          className={`btn scroll-bottom-btn align-self-center ${scrolledBottom ? 'd-none' : ''}`}
+          className={`btn scroll-bottom-btn align-self-center margin-top ${scrolledBottom ? 'd-none' : ''}`}
           onClick={() => scrollToBottom()}
         >
           {'\u{1F847}'} Scroll to Bottom
