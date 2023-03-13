@@ -66,9 +66,11 @@ function App() {
         (excludesArray.length > 0 && excludesArray.some(word => message.includes(word)))
       )
         return console.log(`${tags.username}: ${message}`);
+
       const newMessage = document.createElement('li');
       newMessage.setAttribute('id', tags.id);
       newMessage.innerHTML = `<span style='color:${tags.color};'>${tags['display-name']}</span>: <span>${message}</span>`;
+      
       chatbox.current.appendChild(newMessage);
       if (scrolledBottom)
         chatbox.current.scrollTop = chatbox.current.scrollHeight;
