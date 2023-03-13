@@ -14,12 +14,16 @@ function App() {
   const [excludes, setExcludes] = useState('');
   const [excludesArray, setExcludesArray] = useState([]);
 
+  const [whitelist, setWhitelist] = useState('');
+  const [whitelistArray, setWhiteListArray] = useState([]);
+  const [blacklist, setBlacklist] = useState('');
+  const [blacklistArray, setBlacklistArray] = useState([]);
+
   const [subOnly, setSubOnly] = useState(false);
 
   const [scrolledBottom, setScrolledBottom] = useState(true);
   const [mousedOverChat, setMousedOverChat] = useState(false);
 
-  // Initialise client
   const handleSubmit = async (e) => {
     e.preventDefault();
     clearChat();
@@ -54,10 +58,14 @@ function App() {
     const handleNewMessage = (channel, tags, message, self) => {
       if (
         (subOnly && !tags.subscriber) ||
+
+        (whitelistArray.length > 0 && !whitelistArray.some(username => username === tags.username)) ||
+        (blacklistArray.length > 0 && blacklistArray.some(username => username === tags.username)) ||
+
         (includesArray.length > 0 && !includesArray.some(word => message.includes(word))) ||
-        excludesArray.some(word => message.includes(word))
+        (excludesArray.length > 0 && excludesArray.some(word => message.includes(word)))
       )
-        return console.log(message)
+        return console.log(`${tags.username}: ${message}`);
       const newMessage = document.createElement('li');
       newMessage.setAttribute('id', tags.id);
       newMessage.innerHTML = `<span style='color:${tags.color};'>${tags['display-name']}</span>: <span>${message}</span>`;
@@ -71,42 +79,41 @@ function App() {
     return () => {
       client.off('message', handleNewMessage);
     }
-  }, [client, scrolledBottom, includesArray, excludesArray, subOnly]);
+  }, [client, scrolledBottom, includesArray, excludesArray, whitelistArray, blacklistArray, subOnly]);
 
-  // Includes/Excludes filter
-  const applyCludes = () => {
-    if (includes === '' || !includes.replace(/\s/g, '').length)
-      setIncludesArray([]);
+  const applyFilter = (state, stateFunction) => {
+    if (state === '' || !state.replace(/\s/g, '').length)
+      stateFunction([]);
     else
-      setIncludesArray(includes.replace(/\s*,\s*/g, ',').split(','));
+      stateFunction(state.replace(/\s*,\s*/g, ',').split(','));
+  }
 
-    if (excludes === '' || !excludes.replace(/\s/g, '').length)
-      setExcludesArray([]);
-    else
-      setExcludesArray(excludes.replace(/\s*,\s*/g, ',').split(','));
+  const findRandomMessage = () => {
+    const messages = chatbox.current.childNodes;
+
+    if (messages.length > 0) {
+      const previousRandom = chatbox.current.getElementsByClassName('highlight')[0];
+      if (previousRandom)
+        previousRandom.classList.remove('highlight');
+
+      const message = messages[Math.floor(Math.random() * messages.length)];
+      message.lastElementChild.classList.add('highlight');
+      message.scrollIntoView();
+    }
   }
 
   const clearChat = () => {
     chatbox.current.replaceChildren();
+    setScrolledBottom(true);
   }
 
   const handleScroll = (e) => {
-    setScrolledBottom(Math.abs(e.scrollHeight - e.clientHeight - e.scrollTop) < 1)
+    setScrolledBottom(Math.abs(e.scrollHeight - e.clientHeight - e.scrollTop) < 1);
   }
 
   const scrollToBottom = () => {
     chatbox.current.scrollTop = chatbox.current.scrollHeight;
   }
-
-  const findRandomMessage = () => {
-    const messages = chatbox.current.childNodes;
-    if (messages.length > 0) {
-      const message = messages[Math.floor(Math.random() * messages.length)];
-      message.lastElementChild.classList.add('highlight')
-      message.scrollIntoView();
-    }
-  }
-
 
   return (
     <div className='flex-row align-content-center'>
@@ -124,24 +131,46 @@ function App() {
           </div>
         </form>
 
-        <h4>Filters</h4>
+        <h4>Messages</h4>
 
         {/* Includes/Excludes */}
         <div className='flex-row'>
           <div>
-            <input type='text' value={includes} onChange={(e) => { setIncludes(e.target.value) }}
+            <input type='text' value={includes} onChange={(e) => setIncludes(e.target.value)}
               placeholder='Includes' className='w-100 bottom-flat right-flat magnet-bottom' />
             <input type='text' value={excludes} onChange={(e) => setExcludes(e.target.value)}
               placeholder='Excludes' className='w-100 right-flat top-flat' />
           </div>
-          <button type='button'
-            className='btn left-flat width' onClick={() => applyCludes()}>Apply</button>
+          <button type='button' className='btn left-flat width'
+            onClick={() => {
+              applyFilter(includes, setIncludesArray);
+              applyFilter(excludes, setExcludesArray);
+            }}>Apply</button>
         </div>
 
-        {/* Subscriber only */}
-        <div className='margin-bottom'>
-          <input type='checkbox' value={subOnly} onChange={() => setSubOnly(!subOnly)} />
-          <label>Subscriber Only</label>
+        <h4>Users</h4>
+        <div>
+          {/* Whitelist/Blacklist */}
+          <div className='flex-row'>
+            <div>
+              <input type='text' value={whitelist} onChange={(e) => setWhitelist(e.target.value)}
+                placeholder='Whitelist' className='w-100 bottom-flat right-flat magnet-bottom' />
+              <input type='text' value={blacklist} onChange={(e) => setBlacklist(e.target.value)}
+                placeholder='Blacklist' className='w-100 right-flat top-flat' />
+            </div>
+            <button type='button'
+              className='btn left-flat width'
+              onClick={() => {
+                applyFilter(whitelist, setWhiteListArray);
+                applyFilter(blacklist, setBlacklistArray);
+              }}>Apply</button>
+          </div>
+
+          {/* Subscriber only */}
+          <div className='margin-bottom'>
+            <input type='checkbox' value={subOnly} onChange={() => setSubOnly(!subOnly)} />
+            <label>Subscriber Only</label>
+          </div>
         </div>
 
         {/* Random / Clear */}
