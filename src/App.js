@@ -1,4 +1,5 @@
 import './App.css';
+import Profiles from './Profiles';
 import { useState, useEffect, useRef } from 'react';
 import tmi from 'tmi.js';
 
@@ -28,13 +29,15 @@ function App() {
   const [messageCount, setMessageCount] = useState(0);
   const [messageRate, setMessageRate] = useState('0.00');
 
-  const handleSubmit = async (e) => {
+  const [profileColumn, setProfileColumn] = useState(false);
+
+  const handleRelayButton = async (e) => {
     e.preventDefault();
     clearChat();
     setClient(new tmi.Client({
       channels: [name]
     }));
-  }
+  };
 
   // Connect to channel
   useEffect(() => {
@@ -45,13 +48,13 @@ function App() {
       setLoading(true);
       await client.connect();
       setLoading(false);
-    }
+    };
 
     connectToChannel();
 
     return () => {
       client.disconnect();
-    }
+    };
   }, [client]);
 
   // Get chat messages
@@ -82,13 +85,13 @@ function App() {
       chatbox.current.appendChild(newMessage);
       if (scrolledBottom)
         chatbox.current.scrollTop = chatbox.current.scrollHeight;
-    }
+    };
 
     client.on('message', handleNewMessage);
 
     return () => {
       client.off('message', handleNewMessage);
-    }
+    };
   }, [client, scrolledBottom, includesArray, excludesArray, whitelistArray, blacklistArray, subOnly, startTime, messageCount]);
 
   const applyFilter = (state, stateFunction) => {
@@ -96,7 +99,7 @@ function App() {
       stateFunction([]);
     else
       stateFunction(state.replace(/\s*,\s*/g, ',').split(','));
-  }
+  };
 
   const findRandomMessage = () => {
     const messages = chatbox.current.childNodes;
@@ -110,23 +113,23 @@ function App() {
       message.lastElementChild.classList.add('highlight');
       message.scrollIntoView();
     }
-  }
+  };
 
   const clearChat = () => {
     chatbox.current.replaceChildren();
     setScrolledBottom(true);
     setStartTime(Date.now());
     setMessageCount(0);
-    setMessageRate('0.00')
-  }
+    setMessageRate('0.00');
+  };
 
   const handleScroll = (e) => {
     setScrolledBottom(Math.abs(e.scrollHeight - e.clientHeight - e.scrollTop) < 1);
-  }
+  };
 
   const scrollToBottom = () => {
     chatbox.current.scrollTop = chatbox.current.scrollHeight;
-  }
+  };
 
   return (
     <div className='flex-row align-content-center'>
@@ -135,63 +138,74 @@ function App() {
       <div className='util-column flex-column'>
         <h3>Twitch Chat Relay</h3>
 
-        {/* Channel search */}
-        <form onSubmit={handleSubmit}>
-          <div className='flex-row'>
-            <input type='text' value={name} onChange={(e) => setName(e.target.value)}
-              placeholder='Channel Name' className='w-100 right-flat' />
-            <input type='submit' value='Relay' className='btn submit-btn left-flat width' />
-          </div>
-        </form>
+        {!profileColumn ? <>
+          {/* Channel search */}
+          <form onSubmit={handleRelayButton}>
+            <div className='flex-row'>
+              <input type='text' value={name} onChange={(e) => setName(e.target.value)}
+                placeholder='Channel Name' className='w-100 right-flat' />
+              <input type='submit' value='Relay' className='btn submit-btn left-flat width' />
+            </div>
+          </form>
 
-        <h4>Messages</h4>
+          <h4>Messages</h4>
 
-        {/* Includes/Excludes */}
-        <div className='flex-row'>
-          <div>
-            <input type='text' value={includes} onChange={(e) => setIncludes(e.target.value)}
-              placeholder='Includes' className='w-100 bottom-flat right-flat magnet-bottom' />
-            <input type='text' value={excludes} onChange={(e) => setExcludes(e.target.value)}
-              placeholder='Excludes' className='w-100 right-flat top-flat' />
-          </div>
-          <button type='button' className='btn left-flat width'
-            onClick={() => {
-              applyFilter(includes, setIncludesArray);
-              applyFilter(excludes, setExcludesArray);
-            }}>Apply</button>
-        </div>
-
-        <h4>Users</h4>
-        <div>
-          {/* Whitelist/Blacklist */}
+          {/* Includes/Excludes */}
           <div className='flex-row'>
             <div>
-              <input type='text' value={whitelist} onChange={(e) => setWhitelist(e.target.value)}
-                placeholder='Whitelist' className='w-100 bottom-flat right-flat magnet-bottom' />
-              <input type='text' value={blacklist} onChange={(e) => setBlacklist(e.target.value)}
-                placeholder='Blacklist' className='w-100 right-flat top-flat' />
+              <input type='text' value={includes} onChange={(e) => setIncludes(e.target.value)}
+                placeholder='Includes' className='w-100 bottom-flat right-flat magnet-bottom' />
+              <input type='text' value={excludes} onChange={(e) => setExcludes(e.target.value)}
+                placeholder='Excludes' className='w-100 right-flat top-flat' />
             </div>
-            <button type='button'
-              className='btn left-flat width'
+            <button type='button' className='btn left-flat width'
               onClick={() => {
-                applyFilter(whitelist, setWhiteListArray);
-                applyFilter(blacklist, setBlacklistArray);
+                applyFilter(includes, setIncludesArray);
+                applyFilter(excludes, setExcludesArray);
               }}>Apply</button>
           </div>
 
-          {/* Subscriber only */}
-          <div className='margin-bottom'>
-            <input type='checkbox' value={subOnly} onChange={() => setSubOnly(!subOnly)} />
-            <label>Subscriber Only</label>
+          <h4>Users</h4>
+          <div>
+            {/* Whitelist/Blacklist */}
+            <div className='flex-row'>
+              <div>
+                <input type='text' value={whitelist} onChange={(e) => setWhitelist(e.target.value)}
+                  placeholder='Whitelist' className='w-100 bottom-flat right-flat magnet-bottom' />
+                <input type='text' value={blacklist} onChange={(e) => setBlacklist(e.target.value)}
+                  placeholder='Blacklist' className='w-100 right-flat top-flat' />
+              </div>
+              <button type='button'
+                className='btn left-flat width'
+                onClick={() => {
+                  applyFilter(whitelist, setWhiteListArray);
+                  applyFilter(blacklist, setBlacklistArray);
+                }}>Apply</button>
+            </div>
+
+            <div className='flex-row'>
+
+              {/* Subscriber only */}
+              <div>
+                <input type='checkbox' value={subOnly} onChange={() => setSubOnly(!subOnly)} />
+                <label>Subscriber Only</label>
+              </div>
+
+              {/* Save / Open */}
+              <button className='margin-right row-end link-btn' onClick={() => setProfileColumn(true)}>
+                {'\u{1f4be}'} Save</button>
+              <button className='link-btn' onClick={() => setProfileColumn(true)}>
+                {'\u{1f4c2}'} Open</button>
+            </div>
           </div>
-        </div>
+        </> : <Profiles cancelButton={() => setProfileColumn(false)} />}
 
         {/* Random / Clear */}
         <div className='flex-row align-content-center column-end'>
           <button type='button'
             className='btn margin-right mb-0' onClick={() => findRandomMessage()}>Find Random</button>
           <button type='button'
-            className='btn align-self-center mb-0' onClick={() => clearChat()}>Clear Chat</button>
+            className='btn margin-right align-self-center mb-0' onClick={() => clearChat()}>Clear Chat</button>
         </div>
 
         <p className='align-self-center mb-0 margin-top'>{messageRate} messages/sec</p>
@@ -202,7 +216,7 @@ function App() {
         <p className={`connect-msg ${loading ? '' : 'd-none'}`}>Connecting...</p>
         <ul
           ref={chatbox} className='chatbox' style={{ overflow: mousedOverChat ? 'auto' : 'hidden' }}
-          onScroll={(e) => { handleScroll(e.target) }}
+          onScroll={(e) => { handleScroll(e.target); }}
           onMouseEnter={() => setMousedOverChat(true)}
           onMouseLeave={() => setMousedOverChat(false)}
         />
