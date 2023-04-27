@@ -1,5 +1,5 @@
 import './App.css';
-import Profiles from './Profiles';
+import Profiles from './Saves';
 import { useState, useEffect, useRef } from 'react';
 import tmi from 'tmi.js';
 
@@ -31,7 +31,7 @@ function App() {
 
   const [profileColumn, setProfileColumn] = useState(false);
 
-  const handleRelayButton = async (e) => {
+  const handleRelay = async (e) => {
     e.preventDefault();
     clearChat();
     setClient(new tmi.Client({
@@ -138,9 +138,9 @@ function App() {
       <div className='util-column flex-column'>
         <h3>Twitch Chat Relay</h3>
 
-        {!profileColumn ? <>
+        <div className={`${!profileColumn ? '' : 'd-none'}`}>
           {/* Channel search */}
-          <form onSubmit={handleRelayButton}>
+          <form onSubmit={handleRelay}>
             <div className='flex-row'>
               <input type='text' value={name} onChange={(e) => setName(e.target.value)}
                 placeholder='Channel Name' className='w-100 right-flat' />
@@ -192,20 +192,30 @@ function App() {
               </div>
 
               {/* Save / Open */}
-              <button className='margin-right row-end link-btn' onClick={() => setProfileColumn(true)}>
-                {'\u{1f4be}'} Save</button>
-              <button className='link-btn' onClick={() => setProfileColumn(true)}>
-                {'\u{1f4c2}'} Open</button>
+              <button type='button' className='row-end link-btn' onClick={() => setProfileColumn(true)}>
+                {'\u{1f4be}'} Saves
+              </button>
             </div>
           </div>
-        </> : <Profiles cancelButton={() => setProfileColumn(false)} />}
+        </div>
+
+        <div className={`${profileColumn ? '' : 'd-none'} flex-column saves-list`}>
+          <Profiles
+            channelName={name}
+            includes={includes}
+            excludes={excludes}
+            whitelist={whitelist}
+            blacklist={blacklist}
+            subOnly={subOnly}
+            cancelButton={() => setProfileColumn(false)} />
+        </div>
 
         {/* Random / Clear */}
         <div className='flex-row align-content-center column-end'>
           <button type='button'
             className='btn margin-right mb-0' onClick={() => findRandomMessage()}>Find Random</button>
           <button type='button'
-            className='btn margin-right align-self-center mb-0' onClick={() => clearChat()}>Clear Chat</button>
+            className='btn align-self-center mb-0' onClick={() => clearChat()}>Clear Chat</button>
         </div>
 
         <p className='align-self-center mb-0 margin-top'>{messageRate} messages/sec</p>
@@ -220,7 +230,7 @@ function App() {
           onMouseEnter={() => setMousedOverChat(true)}
           onMouseLeave={() => setMousedOverChat(false)}
         />
-        <button type="button"
+        <button type='button'
           className={`btn scroll-bottom-btn align-self-center margin-top ${scrolledBottom ? 'd-none' : ''}`}
           onClick={() => scrollToBottom()}
         >

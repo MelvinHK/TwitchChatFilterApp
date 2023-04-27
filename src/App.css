@@ -208,3 +208,7 @@ input[type='text']:focus {
     margin-left: 20px;
     margin-top: 20px;
 }
+
+.saves-list {
+    height: 100%;
+}
