@@ -144,7 +144,7 @@ function App() {
             <div className='flex-row'>
               <input type='text' value={name} onChange={(e) => setName(e.target.value)}
                 placeholder='Channel Name' className='w-100 right-flat' />
-              <input type='submit' value='Relay' className='btn submit-btn left-flat width' />
+              <input type='submit' value='Relay' className='btn submit-btn left-flat side-btn' />
             </div>
           </form>
 
@@ -158,7 +158,7 @@ function App() {
               <input type='text' value={excludes} onChange={(e) => setExcludes(e.target.value)}
                 placeholder='Excludes' className='w-100 right-flat top-flat' />
             </div>
-            <button type='button' className='btn left-flat width'
+            <button type='button' className='btn left-flat side-btn'
               onClick={() => {
                 applyFilter(includes, setIncludesArray);
                 applyFilter(excludes, setExcludesArray);
@@ -176,7 +176,7 @@ function App() {
                   placeholder='Blacklist' className='w-100 right-flat top-flat' />
               </div>
               <button type='button'
-                className='btn left-flat width'
+                className='btn left-flat side-btn'
                 onClick={() => {
                   applyFilter(whitelist, setWhiteListArray);
                   applyFilter(blacklist, setBlacklistArray);
@@ -199,7 +199,7 @@ function App() {
           </div>
         </div>
 
-        <div className={`${profileColumn ? '' : 'd-none'} flex-column saves-list`}>
+        <div className={`${profileColumn ? '' : 'd-none'} flex-column`}>
           <Profiles
             channelName={name}
             includes={includes}
