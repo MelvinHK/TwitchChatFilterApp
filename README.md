@@ -5,7 +5,7 @@ Overhauled build of an older version, now developed using React.js
 Features: 
 - Chat relay: relays the chat of an exisiting Twitch channel
 - Filter messages: includes/excludes words, white/blacklist user, subscriber only
-- Save filter settings
+- Save filters settings: Settings saved in browser via localstorage
 - Find random: highlights random message
 - Displays average messsages per sec
 
