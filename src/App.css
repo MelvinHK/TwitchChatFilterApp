@@ -31,6 +31,7 @@ li {
 
 .flex-row {
     display: flex;
+    flex-grow: 0;
 }
 
 .align-y-center {
@@ -148,6 +149,21 @@ input {
     transition-duration: 0.2s;
 }
 
+.bg-white {
+    background-color: white;
+}
+
+.savelist-btn {
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.delete-btn:active {
+    border-color: rgb(255, 118, 118);
+    background-color: rgb(255, 168, 168);
+}
+
 .link-btn {
     border: none;
     background-color: transparent;
@@ -201,10 +217,6 @@ input[type='text']:focus {
     border-color: rgb(125, 50, 235);
     background-color: rgb(145, 70, 255);
     color: rgb(240, 240, 255);
-}
-
-.btn:hover {
-    filter: brightness(1.1)
 }
 
 .btn:active {

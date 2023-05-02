@@ -1,13 +1,21 @@
 import { useState, useReducer } from 'react';
 import './App.css';
 
-function Profiles({ channelName, includes, excludes, whitelist, blacklist, subOnly, cancelButton }) {
+function Profiles({ getSave, channelName, includes, excludes, whitelist, blacklist, subOnly, cancelButton }) {
     const [saveName, setSaveName] = useState('');
 
     const forceUpdate = useReducer(x => x + 1, 0)[1];
 
     const handleSave = (e) => {
         e.preventDefault();
+
+        if (saveName === '' || !saveName.replace(/\s/g, '').length)
+            return alert('Please input save name.');
+
+        for (let key of Object.keys(localStorage))
+            if (saveName.trim() === key && !window.confirm('Save name already exists. Overwrite?'))
+                return;
+
         const value = {
             channelName,
             includes,
@@ -16,7 +24,12 @@ function Profiles({ channelName, includes, excludes, whitelist, blacklist, subOn
             blacklist,
             subOnly
         };
-        localStorage.setItem(saveName, JSON.stringify(value));
+        localStorage.setItem(saveName.trim(), JSON.stringify(value));
+        setSaveName('');
+    };
+
+    const handleReturn = () => {
+        cancelButton();
         setSaveName('');
     };
 
@@ -34,11 +47,14 @@ function Profiles({ channelName, includes, excludes, whitelist, blacklist, subOn
 
             <div className='flex-column overflow'>
                 {localStorage.length > 0 ? Object.keys(localStorage).map((key) => {
-                    const item = localStorage.getItem(key);
                     return (
                         <div key={key} className='flex-row'>
-                            <button className='btn w-100 right-flat'>{key}</button>
-                            <button className='btn left-flat side-btn' onClick={() => { localStorage.removeItem(key); forceUpdate(); }}>
+                            <button type='button' className='btn savelist-btn bg-white right-flat'
+                                onClick={() => { getSave(JSON.parse(localStorage.getItem(key))); handleReturn(); }}>
+                                {key}
+                            </button>
+                            <button type='button' className='btn delete-btn bg-white left-flat side-btn'
+                                onClick={() => { localStorage.removeItem(key); forceUpdate(); }}>
                                 {'\u{1F7AD}'}
                             </button>
                         </div>
@@ -46,7 +62,7 @@ function Profiles({ channelName, includes, excludes, whitelist, blacklist, subOn
                 }) : <p>No filters saved</p>}
             </div>
 
-            <button type='button' className='link-btn row-end' onClick={() => { cancelButton(); setSaveName(''); }}>
+            <button type='button' className='link-btn row-end' onClick={() => handleReturn()}>
                 {'\u{1f844}'} Return
             </button >
         </>

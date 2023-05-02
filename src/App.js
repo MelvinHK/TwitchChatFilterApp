@@ -5,6 +5,7 @@ import tmi from 'tmi.js';
 
 function App() {
   const chatbox = useRef(null);
+  const subOnlyCheckbox = useRef(null);
 
   const [name, setName] = useState('');
   const [client, setClient] = useState();
@@ -187,7 +188,7 @@ function App() {
 
               {/* Subscriber only */}
               <div>
-                <input type='checkbox' value={subOnly} onChange={() => setSubOnly(!subOnly)} />
+                <input ref={subOnlyCheckbox} type='checkbox' onChange={(e) => setSubOnly(e.target.checked)} />
                 <label>Subscriber Only</label>
               </div>
 
@@ -207,7 +208,22 @@ function App() {
             whitelist={whitelist}
             blacklist={blacklist}
             subOnly={subOnly}
-            cancelButton={() => setProfileColumn(false)} />
+            cancelButton={() => setProfileColumn(false)}
+            getSave={(saveData) => {
+              // Populate fields
+              setName(saveData.channelName);
+              setIncludes(saveData.includes);
+              setExcludes(saveData.excludes);
+              setWhitelist(saveData.whitelist);
+              setBlacklist(saveData.blacklist);
+              subOnlyCheckbox.current.checked = (saveData.subOnly);
+              // Apply filters
+              applyFilter(saveData.includes, setIncludesArray);
+              applyFilter(saveData.excludes, setExcludesArray);
+              applyFilter(saveData.whitelist, setWhiteListArray);
+              applyFilter(saveData.blacklist, setBlacklistArray);
+              setSubOnly(saveData.subOnly);
+            }} />
         </div>
 
         {/* Random / Clear */}
