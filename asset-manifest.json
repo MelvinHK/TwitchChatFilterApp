@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/TwitchChatFilterApp/static/css/main.d87798ac.css",
+    "main.js": "/TwitchChatFilterApp/static/js/main.17e33788.js",
+    "static/js/787.c1112931.chunk.js": "/TwitchChatFilterApp/static/js/787.c1112931.chunk.js",
+    "index.html": "/TwitchChatFilterApp/index.html",
+    "main.d87798ac.css.map": "/TwitchChatFilterApp/static/css/main.d87798ac.css.map",
+    "main.17e33788.js.map": "/TwitchChatFilterApp/static/js/main.17e33788.js.map",
+    "787.c1112931.chunk.js.map": "/TwitchChatFilterApp/static/js/787.c1112931.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.d87798ac.css",
+    "static/js/main.17e33788.js"
+  ]
+}
