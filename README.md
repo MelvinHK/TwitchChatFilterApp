@@ -1,4 +1,4 @@
-# Twitch Chat Fiter App
+# Twitch Chat Filter App
 
 Features: 
 - Chat relay: relays the chat of an exisiting Twitch channel
