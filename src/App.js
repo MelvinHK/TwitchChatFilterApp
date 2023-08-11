@@ -137,7 +137,7 @@ function App() {
 
       {/* Utility column */}
       <div className='util-column flex-column'>
-        <h3>Twitch Chat Relay</h3>
+        <h3>Twitch Chat Filter App</h3>
 
         <div className={`${!profileColumn ? '' : 'd-none'}`}>
           {/* Channel search */}
