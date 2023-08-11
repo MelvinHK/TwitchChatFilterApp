@@ -2,7 +2,7 @@
 
 Features: 
 - Chat relay: relays the chat of an exisiting Twitch channel
-- Filter messages: includes/excludes words, white/blacklist user, subscriber only
+- Filter messages: (seperate by comma) includes/excludes words, white/blacklist users, subscriber only
 - Save filters settings: Settings saved in browser via localstorage
 - Find random: highlights random message
 - Displays average messsages per sec
