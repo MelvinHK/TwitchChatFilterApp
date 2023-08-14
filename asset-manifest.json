@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/TwitchChatFilterApp/static/css/main.d87798ac.css",
-    "main.js": "/TwitchChatFilterApp/static/js/main.186577bd.js",
+    "main.css": "/TwitchChatFilterApp/static/css/main.c47051f8.css",
+    "main.js": "/TwitchChatFilterApp/static/js/main.f431f604.js",
     "static/js/787.c1112931.chunk.js": "/TwitchChatFilterApp/static/js/787.c1112931.chunk.js",
     "index.html": "/TwitchChatFilterApp/index.html",
-    "main.d87798ac.css.map": "/TwitchChatFilterApp/static/css/main.d87798ac.css.map",
-    "main.186577bd.js.map": "/TwitchChatFilterApp/static/js/main.186577bd.js.map",
+    "main.c47051f8.css.map": "/TwitchChatFilterApp/static/css/main.c47051f8.css.map",
+    "main.f431f604.js.map": "/TwitchChatFilterApp/static/js/main.f431f604.js.map",
     "787.c1112931.chunk.js.map": "/TwitchChatFilterApp/static/js/787.c1112931.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.d87798ac.css",
-    "static/js/main.186577bd.js"
+    "static/css/main.c47051f8.css",
+    "static/js/main.f431f604.js"
   ]
 }
