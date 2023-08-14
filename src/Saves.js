@@ -63,7 +63,7 @@ function Profiles({ getSave, channelName, includes, excludes, whitelist, blackli
             </div>
 
             <button type='button' className='link-btn row-end' onClick={() => handleReturn()}>
-                {'\u{1f844}'} Return
+                {'\u{21A9}'} Return
             </button >
         </>
     );

@@ -24,7 +24,6 @@ function App() {
   const [subOnly, setSubOnly] = useState(false);
 
   const [scrolledBottom, setScrolledBottom] = useState(true);
-  const [mousedOverChat, setMousedOverChat] = useState(false);
 
   const [startTime, setStartTime] = useState();
   const [messageCount, setMessageCount] = useState(0);
@@ -133,7 +132,7 @@ function App() {
   };
 
   return (
-    <div className='flex-row align-content-center'>
+    <div id="content-wrapper" className='flex-row align-content-center'>
 
       {/* Utility column */}
       <div className='util-column flex-column'>
@@ -238,19 +237,17 @@ function App() {
       </div>
 
       {/* Chatbox */}
-      <div className='flex-column'>
+      <div id="chatbox-wrapper" className='flex-column'>
         <p className={`connect-msg ${loading ? '' : 'd-none'}`}>Connecting...</p>
         <ul
-          ref={chatbox} className='chatbox' style={{ overflow: mousedOverChat ? 'auto' : 'hidden' }}
+          ref={chatbox} className='chatbox'
           onScroll={(e) => { handleScroll(e.target); }}
-          onMouseEnter={() => setMousedOverChat(true)}
-          onMouseLeave={() => setMousedOverChat(false)}
         />
         <button type='button'
           className={`btn scroll-bottom-btn align-self-center margin-top ${scrolledBottom ? 'd-none' : ''}`}
           onClick={() => scrollToBottom()}
         >
-          {'\u{1F847}'} Scroll to Bottom
+          {'\u{2935}'} Scroll to Bottom
         </button>
       </div>
 
